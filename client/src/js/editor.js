@@ -34,9 +34,15 @@ export default class {
     });
 
     // Save the content of the editor when the editor itself is loses focus
-    this.editor.on('blur', () => {
+    this.editor.on('blur', async () => {
       console.log('The editor has lost focus');
-      putDb(localStorage.getItem('content'));
+      
+      // Save content to IndexedDB using putDb
+      const content = this.editor.getValue();
+      await putDb(content);
+      
+      // Also save content to localStorage
+      localStorage.setItem('content', content);
     });
   }
 }
